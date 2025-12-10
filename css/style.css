@@ -1,0 +1,126 @@
+/*index css*/
+header {
+    background-color: rgb(3, 3, 40);
+    color: white;
+    width: 100%;
+    font-weight: bold;
+    position: fixed; 
+    top: 0;
+
+}
+
+footer {
+    background-color: rgb(3, 3, 40);
+    color: white;
+    width: 100%;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+}
+
+#bg-pic {
+    position: relative;
+    z-index: -1;
+}
+
+#logo {
+    padding-left: 20px;
+    height: 50px;
+}
+
+/* 在寬 >=1100px 時讓 collapse 預設展開，並隱藏 toggler */
+@media (min-width: 1100px) {
+  .navbar .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+  .navbar .navbar-collapse .navbar-nav {
+    flex-direction: row;
+  }
+  .navbar .navbar-toggler {
+    display: none !important;
+  }
+}
+
+/* 在寬 <1100px 時使用 bootstrap 預設的 collapse */
+/* 可微調 link 顏色/間距 */
+#left_title {
+  font-size: 24px;
+}
+.navbar .nav-link {
+  color: #fff;
+  padding: .5rem 1rem;
+}
+.navbar .nav-link:hover {
+  text-decoration: none;
+  color: #ffd08a;
+  font-size: larger;
+}
+#logo {
+  max-height: 45px;
+}
+
+/* intro css */
+/* 固定圖片大小，不隨視窗縮放 */
+body {
+  background-color: rgb(8, 8, 31);
+  color: white;
+}
+
+.intro-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px; /*1208*/
+}
+
+.col-md-4 img { /*米山舞圖片767換橫式*/
+    width: 100%;
+    max-width: 500px;  /* 改成你想要的固定寬度 */
+    height: auto;
+    object-fit: cover;
+}
+
+/* ==== 社群按鈕樣式 ==== */
+.social-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+  padding-left: 6px;
+}
+
+.social-link {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  text-decoration: none;
+  transition: transform .12s ease, background .12s ease;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.social-link svg { width: 20px; height: 20px; }
+
+.social-link:hover {
+  transform: translateY(-3px);
+  background: #cf9d53;
+}
+
+@media (max-width: 768px) {
+  .col-md-4 img { max-width: 250px; }
+}
+
+
+th {
+  font-size: large;
+  padding: 30px;
+}
+
+
+
