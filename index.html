@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
     <script src="js_fold/socials.js" defer></script>
 
 </head>
@@ -48,25 +49,26 @@
     <img src="imgs/pic/小熊家.png" alt="封面底圖" style="width: 100%;">
 </picture> -->
 
-<main class="scene">
-  <!-- 最前景：草地 -->
-  <div class="layer layer-grass"></div>
 
-  <!-- 前景：樹 -->
-  <div class="layer layer-trees"></div>
+<div class="spacer">往下捲動開始體驗</div>
 
-  <!-- 中景：洞口 -->
-  <div class="layer layer-hole"></div>
+    <main id="parallax-container">
+        <img src="imgs/pic/bluesky.jpg" class="layer" id="layer-sky" alt="藍天">
+        <img src="imgs/pic/cloude.png" class="layer" id="layer-cloud" alt="雲朵">
+        
+        <img src="imgs/pic/inside.png" class="layer" id="layer-inside" alt="內部場景">
+        
+        <img src="imgs/pic/hole.png" class="layer" id="layer-hole" alt="洞口">
+        <img src="imgs/pic/tree.png" class="layer" id="layer-tree" alt="樹木">
+        <img src="imgs/pic/gress.png" class="layer" id="layer-grass" alt="草地">
+    </main>
 
-  <!-- 後景：雲 -->
-  <div class="layer layer-cloud"></div>
+    <div class="spacer">結束</div>
 
-  <!-- 最後景：天空 -->
-  <div class="layer layer-sky"></div>
-</main>
+
 
 </body>
-<footer>底部</footer>
+<!-- <footer>底部</footer> -->
 </html>
 
 <!-- 1100*748圖片就要換 / navbar就要變可收起 -->

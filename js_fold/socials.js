@@ -29,82 +29,37 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// gsap
-const scene = document.querySelector(".scene");
+//gsap
+// 建立時間軸
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: "#parallax-container", // 以這個容器作為觸發點
+        start: "top top",              // 當容器頂部到達視窗頂部時開始
+        end: "+=3000",                 // 滾動距離（長度決定動畫速度，數字越大越慢）
+        scrub: 1,                      // 讓動畫跟隨滾輪，1 代表有輕微的平滑延遲感
+        pin: true,                     // 重點：將容器固定在畫面中直到動畫結束
+        markers: false                 // 若要偵錯可改為 true
+    }
+});
 
-/* 設定 3D 透視 */
-gsap.set(scene, { perspective: 650 });
+// 設定動畫流程 (從最前面圖層開始放大)
+tl.to("#layer-grass", { scale: 5, opacity: 0, ease: "none" }, 0) // 草地最先放大並消失
+  .to("#layer-tree", { scale: 4, opacity: 0, ease: "none" }, 0.1) // 樹木緊接在後
+  .to("#layer-hole", { scale: 3, opacity: 0, ease: "none" }, 0.2) // 穿過洞口
+  
+  // 視覺核心：進入 inside.png
+  .to("#layer-inside", { 
+      scale: 1.2, // 內部圖層輕微放大，營越走越近的感覺
+      ease: "none" 
+  }, 0.3)
+  
+  // 背景雲朵與天空
+  .to("#layer-cloud", { scale: 1.5, y: -100, ease: "none" }, 0.2)
+  .to("#layer-sky", { scale: 1.1, ease: "none" }, 0);
 
-/* 
-  為每個圖層建立快速動畫控制器
-  數值越大 → 移動幅度越大 → 看起來越前景
+/* 註解說明：
+1. tl.to(目標, { 參數 }, 時間偏移量)
+2. scale: 數字越大，圖片放大得越快，產生的「穿透感」越強。
+3. opacity: 0 讓前景圖層在放大後漸漸隱藏，才不會擋住後面的 inside 圖層。
+4. pin: true 是關鍵，它會讓畫面停在原地，直到你滾完 end 指定的 3000px 距離。
 */
-const layers = [
-  {
-    el: ".layer-grass",
-    x: 40,
-    y: 40,
-    rx: 12,
-    ry: 12,
-  },
-  {
-    el: ".layer-trees",
-    x: 30,
-    y: 30,
-    rx: 10,
-    ry: 10,
-  },
-  {
-    el: ".layer-hole",
-    x: 20,
-    y: 20,
-    rx: 7,
-    ry: 7,
-  },
-  {
-    el: ".layer-cloud",
-    x: 12,
-    y: 12,
-    rx: 4,
-    ry: 4,
-  },
-  {
-    el: ".layer-sky",
-    x: 6,
-    y: 6,
-    rx: 2,
-    ry: 2,
-  },
-];
-
-/* 為每一層建立 GSAP quickTo */
-const anims = layers.map((layer) => ({
-  x: gsap.quickTo(layer.el, "x", { ease: "power3" }),
-  y: gsap.quickTo(layer.el, "y", { ease: "power3" }),
-  rx: gsap.quickTo(layer.el, "rotationX", { ease: "power3" }),
-  ry: gsap.quickTo(layer.el, "rotationY", { ease: "power3" }),
-  config: layer,
-}));
-
-/* 滑鼠移動事件 */
-scene.addEventListener("pointermove", (e) => {
-  const xRatio = e.x / window.innerWidth;
-  const yRatio = e.y / window.innerHeight;
-
-  anims.forEach(({ x, y, rx, ry, config }) => {
-    x(gsap.utils.interpolate(-config.x, config.x, xRatio));
-    y(gsap.utils.interpolate(-config.y, config.y, yRatio));
-    rx(gsap.utils.interpolate(config.rx, -config.rx, yRatio));
-    ry(gsap.utils.interpolate(-config.ry, config.ry, xRatio));
-  });
-});
-
-/* 滑鼠離開 → 回到原位 */
-scene.addEventListener("pointerleave", () => {
-  anims.forEach(({ x, y, rx, ry }) => {
-    x(0);
-    y(0);
-    rx(0);
-    ry(0);
-  });
-});
