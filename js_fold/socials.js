@@ -30,54 +30,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 //gsap
-// 建立動畫時間軸
+// 強制重新整理時回到頂部，避免自動觸發動畫
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+gsap.registerPlugin(ScrollTrigger);
+
+// 2. 建立動畫時間軸
 const tl = gsap.timeline({
     scrollTrigger: {
         trigger: "#parallax-container",
-        start: "top top",      // 網頁頂部一到就開始
-        end: "+=8000",         // 增加數值（從3000變8000）可以讓滾動速度變慢、更平滑
-        scrub: 2,              // 增加數值（從1變2）會讓動畫更有重量感，不會滑一下就飛走
-        pin: true,             // 固定住畫面，讓圖片在原地做放大動畫
-        markers: false
+        start: "top top",      // 當容器頂部碰到視窗頂部開始
+        end: "+=3000",         // 恢復成合理的數值，覺得太快再改成 +=10000
+        scrub: 2,              
+        pin: true,             
+        invalidateOnRefresh: true 
     }
 });
 
-// 動態效果設計
-// 使用極大的 scale (如 10~15) 讓圖片放大到超過螢幕，營造「穿過」感，但不設定 opacity 消失
-tl.to("#layer-grass", { 
-    scale: 1, 
-    ease: "power1.inOut" 
-}, 0) // 0 表示從時間軸 0 秒開始
+// 3. 圖層動畫 (全部設為 0 同步開始)
+tl.to("#layer-grass", { scale: 1.5, ease: "power1.inOut" }, 0)
+  .to("#layer-tree",  { scale: 1.4, ease: "power1.inOut" }, 0)
+  .to("#layer-hole",  { scale: 1.3, ease: "power1.inOut" }, 0)
+  .to("#layer-inside", { scale: 1.1, ease: "power1.inOut" }, 0)
+  .to("#layer-cloud", { scale: 1.2, y: -100, ease: "power1.inOut" }, 0)
+  .to("#layer-sky",   { scale: 1.05, ease: "none" }, 0)
 
-.to("#layer-tree", { 
-    scale: 1, 
-    ease: "power1.inOut" 
-}, 0.5) // 稍微慢一點點開始放大
-
-.to("#layer-hole", { 
-    scale: 1, 
-    ease: "power1.inOut" 
-}, 1) // 穿過洞口
-
-.to("#layer-inside", { 
-    scale: 1, // 內部場景微微放大，保持在畫面上
-    ease: "power1.inOut" 
-}, 1.5)
-
-.to("#layer-cloud", { 
-    scale: 1, 
-    y: -200, // 雲朵往上飄移
-    ease: "power1.inOut" 
-}, 1)
-
-.to("#layer-sky", { 
-    scale: 1, 
-    ease: "none" 
-}, 0);
-
-/* 註解說明：
-- end: "+=8000": 這個數值越大，你就要滑越久才能跑完動畫，速度就會變慢。
-- scale: 12: 因為我們不希望圖片「消失(opacity:0)」，所以透過極大的放大倍率，
-  讓圖片的中央部分撐滿螢幕，邊緣則飛到螢幕外，達成「穿過去」的視覺。
-- ease: "power1.inOut": 讓啟動與結束的感覺更柔和，不會太生硬。
-*/
+  // 文字動畫：請確保 ID 正確，且稍微晚一點點(0.2)浮現更有質感
+  .to("#text-overlay h1", { 
+      opacity: 1,      
+      scale: 1,
+      duration: 1.5,        
+      ease: "power2.out"
+  }, 0.03);
