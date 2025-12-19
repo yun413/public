@@ -1,12 +1,16 @@
 /*index css*/
 header {
     background-color: rgb(3, 3, 40);
-    color: white;
     width: 100%;
-    font-weight: bold;
     position: fixed; 
     top: 0;
-  z-index: 10;
+    z-index: 1000; /* 確保在最上層 */
+    
+    /* 初始狀態設為隱藏 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px); /* 稍微往上偏，做出滑入效果 */
+    transition: none; /* 讓 GSAP 完全掌控 */
 }
 
 footer {
@@ -20,12 +24,40 @@ footer {
     bottom: 0;
 }
 
+#custom-cursor {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(3, 3, 40);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    /* 必須高於 header 的 z-index (10) */
+    z-index: 99999; 
+    /* 初始隱藏，等到 JS 抓到位置再顯示，避免閃爍 */
+    opacity: 1; 
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    transition: opacity 0.3s ease;
+}
+
+body {
+    cursor: none;
+}
+
+/* 確保所有可點擊元素都不顯示預設鼠標 */
+a, button, .navbar-toggler {
+    cursor: none !important;
+}
 
 /*gsap*/
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
+    min-height: 100vh;
     overflow-x: hidden;
     background-color: #000;
 }
@@ -43,9 +75,12 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 保持比例並填滿畫面 */
+    object-fit: cover;
+    /* 效能優化 */
+    transform: translate3d(0, 0, 0);
     will-change: transform;
-    transform-origin: center center;
+    backface-visibility: hidden;
+    transform-origin: bottom center;
 }
 
 /* 文字圖層容器 */
@@ -73,10 +108,6 @@ body, html {
 }
 /*以上gsap*/
 
-#bg-pic {
-    position: relative;
-    z-index: 0;
-}
 
 #logo {
     padding-left: 20px;
@@ -115,65 +146,124 @@ body, html {
   max-height: 45px;
 }
 
-/* intro css */
-/* 固定圖片大小，不隨視窗縮放 */
-body {
-  background-color: rgb(8, 8, 31);
-  color: white;
+/*GSAP動畫後SECTIONS*/
+/* 讓點擊導覽列跳轉時有平滑滾動效果 */
+html {
+    scroll-behavior: smooth;
 }
 
-.intro-wrapper {
+/* 內容區塊基礎樣式 */
+.content-section {
+    min-height: 100vh; /* 每個區塊佔滿一屏 */
+    padding-top: 100px; /* 留出空間給 fixed 的 header */
+    background-color: rgb(8, 8, 31); /* 與你之前的背景色統一 */
+    color: white;
+    position: relative;
+    z-index: 5; /* 確保在動畫容器之後出現 */
+}
+
+.content-section h2 {
+    font-family: "Times New Roman", serif;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* 修正書籤跳轉位置（避免被 header 遮住） */
+section {
+    scroll-margin-top: 80px; 
+}
+
+/*intro*/
+/* 社群按鈕容器 */
+.social-links-container {
     display: flex;
-    align-items: flex-start;
-    gap: 40px; /*1208*/
+    gap: 15px;
+    margin-top: 20px;
 }
 
-.col-md-4 img { /*米山舞圖片767換橫式*/
+/* 個別按鈕樣式 */
+.social-link {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-link svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* 滑鼠懸停特效 */
+.social-link:hover {
+    background-color: #ffd08a; /* 你的亮色系主題色 */
+    color: rgb(3, 3, 40);      /* 背景深藍色 */
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(255, 208, 138, 0.3);
+}
+
+/*DRAWING SLIDER部分*/
+/* 整個區塊的高度由 JS 控制捲動距離 */
+.drawing-horizontal-section {
+    overflow: hidden; /* 防止出現水平捲軸 */
+    background-color: rgb(8, 8, 31);
+}
+
+.horizontal-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.horizontal-header {
+    padding-left: 10%;
+    margin-bottom: 30px;
+}
+
+/* 軌道：所有卡片橫向排成一列 */
+.slider-track {
+    display: flex;
+    padding: 0 10%;
+    gap: 40px;
+    width: max-content; /* 讓內容決定寬度 */
+    will-change: transform;
+}
+
+.card-item {
+    position: relative;
+    width: 400px;
+    height: 550px;
+    flex-shrink: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #1a1a1a;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+}
+
+.card-item:hover {
+    transform: translateY(-15px);
+}
+
+.card-item img {
     width: 100%;
-    max-width: 500px;  /* 改成你想要的固定寬度 */
-    height: auto;
+    height: 100%;
     object-fit: cover;
 }
 
-/* ==== 社群按鈕樣式 ==== */
-.social-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 8px;
-  padding-left: 6px;
+.card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
 }
-
-.social-link {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  color: #fff;
-  text-decoration: none;
-  transition: transform .12s ease, background .12s ease;
-  border: 1px solid rgba(255,255,255,0.04);
-}
-
-.social-link svg { width: 20px; height: 20px; }
-
-.social-link:hover {
-  transform: translateY(-3px);
-  background: #cf9d53;
-}
-
-@media (max-width: 768px) {
-  .col-md-4 img { max-width: 250px; }
-}
-
-
-th {
-  font-size: large;
-  padding: 30px;
-}
-
-
-
