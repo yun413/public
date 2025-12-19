@@ -30,36 +30,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 //gsap
-// 建立時間軸
+// 建立動畫時間軸
 const tl = gsap.timeline({
     scrollTrigger: {
-        trigger: "#parallax-container", // 以這個容器作為觸發點
-        start: "top top",              // 當容器頂部到達視窗頂部時開始
-        end: "+=3000",                 // 滾動距離（長度決定動畫速度，數字越大越慢）
-        scrub: 1,                      // 讓動畫跟隨滾輪，1 代表有輕微的平滑延遲感
-        pin: true,                     // 重點：將容器固定在畫面中直到動畫結束
-        markers: false                 // 若要偵錯可改為 true
+        trigger: "#parallax-container",
+        start: "top top",      // 網頁頂部一到就開始
+        end: "+=8000",         // 增加數值（從3000變8000）可以讓滾動速度變慢、更平滑
+        scrub: 2,              // 增加數值（從1變2）會讓動畫更有重量感，不會滑一下就飛走
+        pin: true,             // 固定住畫面，讓圖片在原地做放大動畫
+        markers: false
     }
 });
 
-// 設定動畫流程 (從最前面圖層開始放大)
-tl.to("#layer-grass", { scale: 5, opacity: 0, ease: "none" }, 0) // 草地最先放大並消失
-  .to("#layer-tree", { scale: 4, opacity: 0, ease: "none" }, 0.1) // 樹木緊接在後
-  .to("#layer-hole", { scale: 3, opacity: 0, ease: "none" }, 0.2) // 穿過洞口
-  
-  // 視覺核心：進入 inside.png
-  .to("#layer-inside", { 
-      scale: 1.2, // 內部圖層輕微放大，營越走越近的感覺
-      ease: "none" 
-  }, 0.3)
-  
-  // 背景雲朵與天空
-  .to("#layer-cloud", { scale: 1.5, y: -100, ease: "none" }, 0.2)
-  .to("#layer-sky", { scale: 1.1, ease: "none" }, 0);
+// 動態效果設計
+// 使用極大的 scale (如 10~15) 讓圖片放大到超過螢幕，營造「穿過」感，但不設定 opacity 消失
+tl.to("#layer-grass", { 
+    scale: 1, 
+    ease: "power1.inOut" 
+}, 0) // 0 表示從時間軸 0 秒開始
+
+.to("#layer-tree", { 
+    scale: 1, 
+    ease: "power1.inOut" 
+}, 0.5) // 稍微慢一點點開始放大
+
+.to("#layer-hole", { 
+    scale: 1, 
+    ease: "power1.inOut" 
+}, 1) // 穿過洞口
+
+.to("#layer-inside", { 
+    scale: 1, // 內部場景微微放大，保持在畫面上
+    ease: "power1.inOut" 
+}, 1.5)
+
+.to("#layer-cloud", { 
+    scale: 1, 
+    y: -200, // 雲朵往上飄移
+    ease: "power1.inOut" 
+}, 1)
+
+.to("#layer-sky", { 
+    scale: 1, 
+    ease: "none" 
+}, 0);
 
 /* 註解說明：
-1. tl.to(目標, { 參數 }, 時間偏移量)
-2. scale: 數字越大，圖片放大得越快，產生的「穿透感」越強。
-3. opacity: 0 讓前景圖層在放大後漸漸隱藏，才不會擋住後面的 inside 圖層。
-4. pin: true 是關鍵，它會讓畫面停在原地，直到你滾完 end 指定的 3000px 距離。
+- end: "+=8000": 這個數值越大，你就要滑越久才能跑完動畫，速度就會變慢。
+- scale: 12: 因為我們不希望圖片「消失(opacity:0)」，所以透過極大的放大倍率，
+  讓圖片的中央部分撐滿螢幕，邊緣則飛到螢幕外，達成「穿過去」的視覺。
+- ease: "power1.inOut": 讓啟動與結束的感覺更柔和，不會太生硬。
 */
