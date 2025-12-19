@@ -27,3 +27,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
   img.parentNode.insertBefore(wrapper, img.nextSibling);
 });
+
+
+// gsap
+const scene = document.querySelector(".scene");
+
+/* 設定 3D 透視 */
+gsap.set(scene, { perspective: 650 });
+
+/* 
+  為每個圖層建立快速動畫控制器
+  數值越大 → 移動幅度越大 → 看起來越前景
+*/
+const layers = [
+  {
+    el: ".layer-grass",
+    x: 40,
+    y: 40,
+    rx: 12,
+    ry: 12,
+  },
+  {
+    el: ".layer-trees",
+    x: 30,
+    y: 30,
+    rx: 10,
+    ry: 10,
+  },
+  {
+    el: ".layer-hole",
+    x: 20,
+    y: 20,
+    rx: 7,
+    ry: 7,
+  },
+  {
+    el: ".layer-cloud",
+    x: 12,
+    y: 12,
+    rx: 4,
+    ry: 4,
+  },
+  {
+    el: ".layer-sky",
+    x: 6,
+    y: 6,
+    rx: 2,
+    ry: 2,
+  },
+];
+
+/* 為每一層建立 GSAP quickTo */
+const anims = layers.map((layer) => ({
+  x: gsap.quickTo(layer.el, "x", { ease: "power3" }),
+  y: gsap.quickTo(layer.el, "y", { ease: "power3" }),
+  rx: gsap.quickTo(layer.el, "rotationX", { ease: "power3" }),
+  ry: gsap.quickTo(layer.el, "rotationY", { ease: "power3" }),
+  config: layer,
+}));
+
+/* 滑鼠移動事件 */
+scene.addEventListener("pointermove", (e) => {
+  const xRatio = e.x / window.innerWidth;
+  const yRatio = e.y / window.innerHeight;
+
+  anims.forEach(({ x, y, rx, ry, config }) => {
+    x(gsap.utils.interpolate(-config.x, config.x, xRatio));
+    y(gsap.utils.interpolate(-config.y, config.y, yRatio));
+    rx(gsap.utils.interpolate(config.rx, -config.rx, yRatio));
+    ry(gsap.utils.interpolate(-config.ry, config.ry, xRatio));
+  });
+});
+
+/* 滑鼠離開 → 回到原位 */
+scene.addEventListener("pointerleave", () => {
+  anims.forEach(({ x, y, rx, ry }) => {
+    x(0);
+    y(0);
+    rx(0);
+    ry(0);
+  });
+});

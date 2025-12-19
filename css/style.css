@@ -19,10 +19,68 @@ footer {
     position: fixed;
     bottom: 0;
 }
+/* 下方為gsap */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 整個視差場景容器 */
+.scene {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  perspective: 650px; /* GSAP 3D 效果 */
+  background: #000;
+}
+
+/* 所有圖層的共通設定 */
+.layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+
+/* ===== 各圖層指定圖片 ===== */
+
+/* 最前面：草地 */
+.layer-grass {
+  background-image: url("grass.png");
+  z-index: 5;
+}
+
+/* 樹 */
+.layer-trees {
+  background-image: url("tress.png");
+  z-index: 4;
+}
+
+/* 洞口 */
+.layer-hole {
+  background-image: url("hole.png");
+  z-index: 3;
+}
+
+/* 雲 */
+.layer-cloud {
+  background-image: url("cloude.png");
+  z-index: 2;
+}
+
+/* 天空（最後） */
+.layer-sky {
+  background-image: url("bluesky.jpg");
+  z-index: 1;
+}
+/* 以上gsap */
 
 #bg-pic {
     position: relative;
-    z-index: -1;
+    z-index: 0;
 }
 
 #logo {

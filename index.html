@@ -28,8 +28,8 @@
     
         <div class="collapse navbar-collapse" id="mainNav">
           <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link" href="intro.html">INTRO</a></li>
-            <li class="nav-item"><a class="nav-link" href="protofo.html">PROTOFO</a></li>
+            <li class="nav-item"><a class="nav-link" href="#intro">INTRO</a></li>
+            <li class="nav-item"><a class="nav-link" href="#protofo">PROTOFO</a></li>
           </ul>
         </div>
       </div>
@@ -41,12 +41,30 @@
         <img id="bg-pic" src="imgs/pic/森林.png" alt="封面底圖" style="width: 100%;">
     </div> -->
 <!--封面底圖-->
-<picture>
+<!-- <picture>
     <source media="(max-width: 480px)" srcset="imgs/pic/開頭場景.png" style="width: 100%">
     <source media="(max-width: 840px)" srcset="imgs/pic/開頭場景_正.png" style="height: 100%">
     <source media="(max-width: 1100px)" srcset="imgs/pic/小熊家.png" style="height: 100%">
     <img src="imgs/pic/小熊家.png" alt="封面底圖" style="width: 100%;">
-</picture>
+</picture> -->
+
+<main class="scene">
+  <!-- 最前景：草地 -->
+  <div class="layer layer-grass"></div>
+
+  <!-- 前景：樹 -->
+  <div class="layer layer-trees"></div>
+
+  <!-- 中景：洞口 -->
+  <div class="layer layer-hole"></div>
+
+  <!-- 後景：雲 -->
+  <div class="layer layer-cloud"></div>
+
+  <!-- 最後景：天空 -->
+  <div class="layer layer-sky"></div>
+</main>
+
 </body>
 <footer>底部</footer>
 </html>
