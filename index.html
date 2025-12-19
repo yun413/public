@@ -31,9 +31,10 @@
           <ul class="navbar-nav ms-auto align-items-center">
             <li class="nav-item"><a class="nav-link" href="#intro">INTRO</a></li>
             <li class="nav-item"><a class="nav-link" href="#drawing">DRAWING</a></li>
+            <li class="nav-item"><a class="nav-link" href="#picture">PICTURE</a></li>
             <li class="nav-item"><a class="nav-link" href="#video">VIDEO</a></li>
             <li class="nav-item"><a class="nav-link" href="#model">MODEL</a></li>
-            <li class="nav-item"><a class="nav-link" href="#photo">PHOTO</a></li>
+
           </ul>
         </div>
       </div>
@@ -90,32 +91,59 @@
 
 <section id="drawing" class="drawing-horizontal-section">
     <div class="horizontal-wrapper">
-      
         <div class="horizontal-header">
-        <h2>DRAWING</h2>    
+            <h2>DRAWING</h2>
             <hr>
         </div>
-        
         <div class="slider-track">
-            <div class="card-item">
-                <img src="imgs/pic/567.jpg" alt="Work 1">
-            </div>
+            <div class="card-item"><img src="imgs/pic/567.jpg" alt="Work 1"></div>
             <div class="card-item"><img src="imgs/pic/0708.jpg" alt="Work 2"></div>
             <div class="card-item"><img src="imgs/pic/A4彩繪.png" alt="Work 3"></div>
             <div class="card-item"><img src="imgs/pic/貴族小姐.jpg" alt="Work 4"></div>
-            <div class="card-item"><img src="imgs/pic/席菈.png" alt="Work 6"></div>
-            <div class="card-item"><img src="imgs/pic/禁止超速.jpg" alt="Work 7"></div>
-            <div class="card-item"><img src="imgs/pic/轉彎前的光.jpg" alt="Work 8"></div>
-            
-          </div>
+            <div class="card-item"><img src="imgs/pic/席菈.png" alt="Work 5"></div>
+        </div>
     </div>
 </section>
+
+
+<section id="picture" class="drawing-horizontal-section picture-blue-bg">
+    <div class="horizontal-wrapper">
+        <div class="horizontal-header">
+            <h2>PICTURE</h2>
+            <hr>
+        </div>
+        <div class="slider-track">
+            <div class="card-item"><img src="imgs/pic/禁止超速.jpg" alt="pic 1"></div>
+            <div class="card-item"><img src="imgs/pic/轉彎前的光.jpg" alt="pic 2"></div>
+            <div class="card-item"><img src="imgs/pic/1411222007-1.jpg" alt="pic 3"></div>
+            <div class="card-item"><img src="imgs/pic/1411222007-2.jpg" alt="pic 4"></div>
+            <div class="card-item"><img src="imgs/pic/1411222007-3.jpg" alt="pic 5"></div>
+            <div class="card-item"><img src="imgs/pic/1411222007-4.jpg" alt="pic 6"></div>
+        </div>
+    </div>
+</section>
+
+
+
+
 
 
 <section id="video" class="content-section">
     <div class="container">
         <h2>VIDEO</h2>
         <hr>
+        <div class="video-tabs d-flex flex-wrap gap-2 mb-4">
+            <button class="video-tab active" data-video="imgs/video/introduction.mp4">動態履歷表</button>
+            <button class="video-tab" data-video="imgs/video/貝貝的冒險.mp4">動畫設計初稿</button>
+            <button class="video-tab" data-video="imgs/video/小熊貝貝的冒險.mp4">小熊貝貝的冒險</button>
+        </div>
+
+        <div class="video-display-container d-flex justify-content-center">
+            <video id="main-video-player" controls playsinline preload="metadata">
+                <source src="imgs/video/introduction.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
     </div>
 </section>
 
@@ -126,12 +154,11 @@
     </div>
 </section>
 
-<section id="photo" class="content-section">
-    <div class="container">
-        <h2>PHOTO</h2>
-        <hr>
-    </div>
-</section>
+
+
+
+
+
 
 </body>
 <!-- <footer>底部</footer> -->

@@ -1,13 +1,18 @@
-// 保留這段鼠標與動畫邏輯
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener("load", () => {
+    ScrollTrigger.refresh();
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     
-    // --- 鼠標邏輯 ---
+    // --- 1. 鼠標邏輯 ---
     const cursor = document.querySelector("#custom-cursor");
     window.addEventListener("mousemove", (e) => {
         gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
     });
 
-    // --- 視差動畫 (Timeline) ---
+    // --- 2. 視差動畫 (Parallax) ---
     const tl = gsap.timeline({
         scrollTrigger: {
             trigger: "#parallax-container",
@@ -18,13 +23,12 @@ document.addEventListener("DOMContentLoaded", function() {
             invalidateOnRefresh: true 
         }
     });
-
     tl.to("#layer-grass", { scale: 1.6 }, 0)
-      .to("#layer-tree1",  { scale: 1.4 }, 0.1)
-      .to("#layer-sky",    { scale: 1.1 }, 0)
+      .to("#layer-tree1", { scale: 1.4 }, 0.1)
+      .to("#layer-sky", { scale: 1.1 }, 0)
       .to("#text-overlay h1", { opacity: 1, scale: 1 }, 0.2);
 
-    // --- Header 滑入 (當動畫結束進入 Intro 時) ---
+    // --- 3. Header 滑入 ---
     gsap.to("header", {
         scrollTrigger: {
             trigger: "#intro",
@@ -37,33 +41,55 @@ document.addEventListener("DOMContentLoaded", function() {
         duration: 0.5
     });
 
-    //DRAWING SLIDER部分
-    // 在 socials.js 的 DOMContentLoaded 內加入：
+    // --- 4 & 5. 橫向捲動邏輯 (DRAWING & PICTURE 共用) ---
+    const horizontalSections = document.querySelectorAll(".drawing-horizontal-section");
 
-    const track = document.querySelector(".slider-track");
-    const sections = gsap.utils.toArray(".card-item");
+    horizontalSections.forEach((section) => {
+        const track = section.querySelector(".slider-track");
+        if (!track) return;
 
-    // 計算需要往左移動的距離：(軌道總寬度 - 視窗寬度)
-    let trackWidth = track.scrollWidth;
-    let moveDistance = trackWidth - window.innerWidth;
+        // 計算移動距離：軌道寬度 - 視窗寬度 + 額外的 padding
+        const getMoveDistance = () => track.scrollWidth - window.innerWidth + (window.innerWidth * 0.2);
 
-    gsap.to(track, {
-        x: () => -moveDistance, // 往左移動
-        ease: "none", // 視差捲動通常用 none 感覺最線性直接
-        scrollTrigger: {
-            trigger: ".drawing-horizontal-section",
-            pin: true,           // 固定住區塊，直到水平移動完畢
-            scrub: 1,            // 讓動畫跟隨滾輪
-            start: "top top",    // 當區塊頂部到達視窗頂部時開始
-            end: () => "+=" + moveDistance, // 垂直捲動的距離等於水平移動的距離
-            invalidateOnRefresh: true // 視窗縮放時重新計算
-        }
+        gsap.to(track, {
+            x: () => -getMoveDistance(),
+            ease: "none",
+            scrollTrigger: {
+                trigger: section,
+                pin: true,
+                scrub: 1,
+                start: "top top",
+                end: () => "+=" + getMoveDistance(),
+                invalidateOnRefresh: true
+            }
+        });
     });
 
+    // --- 6. VIDEO 切換邏輯 ---
+    const videoTabs = document.querySelectorAll(".video-tab");
+    const videoPlayer = document.querySelector("#main-video-player");
 
+    if (videoPlayer) {
+        videoPlayer.volume = 0.1;
+        videoTabs.forEach(tab => {
+            tab.addEventListener("click", function() {
+                videoTabs.forEach(t => t.classList.remove("active"));
+                this.classList.add("active");
+                const videoSrc = this.getAttribute("data-video");
 
-
-
-
+                gsap.to(videoPlayer, {
+                    opacity: 0,
+                    duration: 0.3,
+                    onComplete: () => {
+                        videoPlayer.src = videoSrc;
+                        videoPlayer.load(); 
+                        videoPlayer.volume = 0.1;
+                        videoPlayer.onloadeddata = () => {
+                            gsap.to(videoPlayer, { opacity: 1, duration: 0.3 });
+                        };
+                    }
+                });
+            });
+        });
+    }
 });
-

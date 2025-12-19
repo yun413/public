@@ -211,58 +211,167 @@ section {
 
 /*DRAWING SLIDER部分*/
 /* 整個區塊的高度由 JS 控制捲動距離 */
+/* 橫向區塊容器 */
 .drawing-horizontal-section {
-    overflow: hidden; /* 防止出現水平捲軸 */
-    background-color: rgb(255, 255, 255);
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(8, 8, 31);
 }
-
-/* .drawing-horizontal-section hr {
-  border-top: 1px solid white;
-  opacity: 0.25;
-  margin-bottom: 20px;
-} */
 
 .horizontal-wrapper {
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
 }
 
-.horizontal-header {
-    padding-left: 5%;
-    margin-bottom: 30px;
-}
-
-/* 軌道：所有卡片橫向排成一列 */
+/* 軌道：確保寬度是由內容撐開，且不換行 */
 .slider-track {
     display: flex;
-    padding: 0 10%;
-    gap: 40px;
-    width: max-content; /* 讓內容決定寬度 */
+    flex-wrap: nowrap;
+    padding: 0 10vw; /* 初始偏移量 */
+    gap: 50px;       /* 卡片間距 */
+    width: max-content; 
     will-change: transform;
 }
 
+/* 固定卡片大小，避免變形 */
 .card-item {
-    position: relative;
-    width: 400px;
-    height: 550px;
-    flex-shrink: 0;
-    border-radius: 20px;
+    width: 350px;    /* 視需求調整寬度 */
+    height: 500px;   /* 視需求調整高度 */
+    flex-shrink: 0;  /* 防止被壓縮 */
+    border-radius: 15px;
     overflow: hidden;
-    background: #1a1a1a;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
-}
-
-.card-item:hover {
-    transform: translateY(-15px);
 }
 
 .card-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* 關鍵：裁切填充，不留白 */
 }
 
+/*video*/
+/* 膠囊按鈕樣式 */
+.video-tab {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 8px 24px;
+    border-radius: 50px; /* 膠囊形狀 */
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    cursor: none !important; /* 配合你的自訂鼠標 */
+}
+
+/* 膠囊選中後的變色狀態 */
+.video-tab.active {
+    background-color: #ffd08a; /* 你的主題金色 */
+    color: #030328;
+    border-color: #ffd08a;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 208, 138, 0.4);
+}
+
+.video-tab:hover:not(.active) {
+    border-color: #ffd08a;
+    color: #ffd08a;
+}
+
+/* 播放器容器 */
+.video-display-container {
+    width: 100%;
+    margin-top: 20px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    min-height: 200px; 
+}
+
+#main-video-player {
+    max-width: 100%;  /* 寬度不超過容器 */
+    max-height: 70vh; /* 高度不超過螢幕的 70%，避免過大 */
+    display: block;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+
+/*picture部分*/
+.lateral-pin-section {
+    background-color: #030328; /* 回到深色背景 */
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-panel {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+}
+
+.sticky-content {
+    width: 100%;
+}
+
+/* 指示器樣式 */
+.lateral-indicators {
+    margin-top: 50px;
+}
+
+.indicator {
+    font-family: "Times New Roman", serif;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 20px 0;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+}
+
+.indicator::before {
+    content: '';
+    width: 0px;
+    height: 2px;
+    background: #ffd08a;
+    margin-right: 0;
+    transition: all 0.4s ease;
+}
+
+.indicator.active {
+    color: #ffd08a;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.indicator.active::before {
+    width: 40px;
+    margin-right: 15px;
+}
+
+/* 右側圖片樣式 */
+.right-panel {
+    padding: 100px 5% 100px 0;
+}
+
+.scroll-item {
+    width: 100%;
+    margin-bottom: 15vh; /* 圖片之間的間距 */
+    opacity: 0.3;
+    transform: translateY(50px);
+    transition: all 0.6s ease;
+}
+
+.scroll-item.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-item img {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
