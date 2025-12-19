@@ -162,7 +162,8 @@ html {
     z-index: 5; /* 確保在動畫容器之後出現 */
 }
 
-.content-section h2 {
+.content-section h2,
+.drawing-horizontal-section h2 {
     font-family: "Times New Roman", serif;
     font-size: 3rem;
     margin-bottom: 20px;
@@ -212,8 +213,14 @@ section {
 /* 整個區塊的高度由 JS 控制捲動距離 */
 .drawing-horizontal-section {
     overflow: hidden; /* 防止出現水平捲軸 */
-    background-color: rgb(8, 8, 31);
+    background-color: rgb(255, 255, 255);
 }
+
+/* .drawing-horizontal-section hr {
+  border-top: 1px solid white;
+  opacity: 0.25;
+  margin-bottom: 20px;
+} */
 
 .horizontal-wrapper {
     height: 100vh;
@@ -224,7 +231,7 @@ section {
 }
 
 .horizontal-header {
-    padding-left: 10%;
+    padding-left: 5%;
     margin-bottom: 30px;
 }
 
@@ -259,11 +266,3 @@ section {
     object-fit: cover;
 }
 
-.card-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-}
