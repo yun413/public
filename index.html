@@ -188,6 +188,67 @@
     </div>
 </footer>
 
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. 載入 Drawing 作品
+    fetch("/api/drawings")
+        .then(res => res.json())
+        .then(data => {
+            const track = document.querySelector(".slider-track");
+            if(data.length > 0) {
+                track.innerHTML = data.map(item => `
+                    <div class="card-item"><img src="${item.imgSrc}" alt="${item.title}"></div>
+                `).join("");
+            }
+            // 由於是非同步載入，載入後必須通知 ScrollTrigger 重新計算
+            if(window.ScrollTrigger) ScrollTrigger.refresh();
+        });
+
+    // 2. 載入 Video 作品
+    fetch("/api/videos")
+        .then(res => res.json())
+        .then(data => {
+            const tabContainer = document.querySelector("#video .video-tabs");
+            if(data.length > 0) {
+                tabContainer.innerHTML = data.map((item, index) => `
+                    <button class="video-tab ${index === 0 ? 'active' : ''}" data-video="${item.videoSrc}">
+                        ${item.title}
+                    </button>
+                `).join("");
+                
+                // 重新綁定影片切換點擊事件 (因為標籤是新產生的)
+                setupVideoTabs(); 
+            }
+        });
+        
+    // 依此類推載入 Intro, Picture, Model...
+});
+
+function setupVideoTabs() {
+    const tabs = document.querySelectorAll("#video .video-tab");
+    const player = document.querySelector("#main-video-player");
+    tabs.forEach(tab => {
+        tab.addEventListener("click", function() {
+            tabs.forEach(t => t.classList.remove("active"));
+            this.classList.add("active");
+            const src = this.getAttribute("data-video");
+            player.src = src;
+            player.load();
+        });
+    });
+}
+</script>
+
+
+
+
+
 </body>
 </html>
 

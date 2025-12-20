@@ -140,4 +140,108 @@ document.addEventListener("DOMContentLoaded", function() {
         duration: 0.3
     });
 
+
+
+
+
+
+
+
+                //fetch
+
+
+                // 3. 載入 Picture 作品
+                fetch("/api/pictures")
+                    .then(res => res.json())
+                    .then(data => {
+                        const tabContainer = document.querySelector("#picture .photo-tabs");
+                        const mainDisplay = document.querySelector("#main-photo-display");
+                        
+                        if(data.length > 0) {
+                            // 生成標籤
+                            tabContainer.innerHTML = data.map((item, index) => `
+                                <button class="video-tab ${index === 0 ? 'active' : ''}" data-photo="${item.imgSrc}">
+                                    ${item.title}
+                                </button>
+                            `).join("");
+                            
+                            // 預設顯示第一張圖
+                            mainDisplay.src = data[0].imgSrc;
+
+                            // 重新綁定點擊事件
+                            const tabs = tabContainer.querySelectorAll(".video-tab");
+                            tabs.forEach(tab => {
+                                tab.addEventListener("click", function() {
+                                    tabs.forEach(t => t.classList.remove("active"));
+                                    this.classList.add("active");
+                                    
+                                    const newSrc = this.getAttribute("data-photo");
+                                    // 加入淡入淡出動畫
+                                    gsap.to(mainDisplay, {
+                                        opacity: 0,
+                                        duration: 0.3,
+                                        onComplete: () => {
+                                            mainDisplay.src = newSrc;
+                                            mainDisplay.onload = () => gsap.to(mainDisplay, { opacity: 1, duration: 0.3 });
+                                        }
+                                    });
+                                });
+                            });
+                        }
+                    });
+
+
+                // 4. 載入 Model 作品
+                fetch("/api/models")
+                    .then(res => res.json())
+                    .then(data => {
+                        const tabContainer = document.querySelector("#model .photo-tabs");
+                        const mainDisplay = document.querySelector("#main-model-display");
+                        
+                        if(data.length > 0) {
+                            // 生成標籤
+                            tabContainer.innerHTML = data.map((item, index) => `
+                                <button class="video-tab ${index === 0 ? 'active' : ''}" data-photo="${item.modelSrc}">
+                                    ${item.title}
+                                </button>
+                            `).join("");
+
+                            // 預設顯示第一個模型圖
+                            mainDisplay.src = data[0].modelSrc;
+
+                            // 重新綁定點擊事件
+                            const tabs = tabContainer.querySelectorAll(".video-tab");
+                            tabs.forEach(tab => {
+                                tab.addEventListener("click", function() {
+                                    tabs.forEach(t => t.classList.remove("active"));
+                                    this.classList.add("active");
+                                    
+                                    const newSrc = this.getAttribute("data-photo");
+                                    gsap.to(mainDisplay, {
+                                        opacity: 0,
+                                        duration: 0.3,
+                                        onComplete: () => {
+                                            mainDisplay.src = newSrc;
+                                            mainDisplay.onload = () => gsap.to(mainDisplay, { opacity: 1, duration: 0.3 });
+                                        }
+                                    });
+                                });
+                            });
+                        }
+                    });
+
+
+
+                    // 5. 載入 Intro 基本資料
+                    fetch("/api/intro")
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.length > 0) {
+                                const info = data[0];
+                                document.querySelector("#left_title").innerText = info.title; // 導覽列的名字
+                                document.querySelector("#intro h2").innerText = info.name;    // Intro 標題
+                                document.querySelector("#intro p").innerText = info.introText; // 介紹文字
+                                document.querySelector("#intro img").src = info.imgSrc;       // 大頭照
+                            }
+                        });
 });
