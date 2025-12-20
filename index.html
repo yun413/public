@@ -90,7 +90,7 @@
 </section>
 
 <section id="drawing" class="drawing-horizontal-section">
-    <div class="horizontal-wrapper">
+    <div class="horizontal-wrapper container">
         <div class="horizontal-header">
             <h2>DRAWING</h2>
             <hr>
@@ -106,25 +106,25 @@
 </section>
 
 
-<section id="picture" class="drawing-horizontal-section picture-blue-bg">
-    <div class="horizontal-wrapper">
-        <div class="horizontal-header">
-            <h2>PICTURE</h2>
-            <hr>
+<section id="picture" class="content-section">
+    <div class="container">
+        <h2>PICTURE</h2>
+        <hr>
+        <div class="photo-tabs d-flex flex-wrap gap-2 mb-4">
+            <button class="video-tab active" data-photo="imgs/pic/禁止超速.jpg">禁止超速</button>
+            <button class="video-tab" data-photo="imgs/pic/轉彎前的光.jpg">轉彎前的光</button>
+            <button class="video-tab" data-photo="imgs/pic/1411222007-1.jpg">永續商品型錄1</button>
+            <button class="video-tab" data-photo="imgs/pic/1411222007-2.jpg">永續商品型錄2</button>
+            <button class="video-tab" data-photo="imgs/pic/1411222007-3.jpg">永續商品型錄3</button>
+            <button class="video-tab" data-photo="imgs/pic/1411222007-4.jpg">永續商品型錄4</button>
         </div>
-        <div class="slider-track">
-            <div class="card-item"><img src="imgs/pic/禁止超速.jpg" alt="pic 1"></div>
-            <div class="card-item"><img src="imgs/pic/轉彎前的光.jpg" alt="pic 2"></div>
-            <div class="card-item"><img src="imgs/pic/1411222007-1.jpg" alt="pic 3"></div>
-            <div class="card-item"><img src="imgs/pic/1411222007-2.jpg" alt="pic 4"></div>
-            <div class="card-item"><img src="imgs/pic/1411222007-3.jpg" alt="pic 5"></div>
-            <div class="card-item"><img src="imgs/pic/1411222007-4.jpg" alt="pic 6"></div>
+
+        <div class="video-display-container d-flex justify-content-center">
+            <img id="main-photo-display" src="imgs/pic/禁止超速.jpg" alt="Selected Picture" 
+                 style="max-width: 100%; max-height: 70vh; object-fit: contain; display: block; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         </div>
     </div>
 </section>
-
-
-
 
 
 
@@ -147,20 +147,47 @@
     </div>
 </section>
 
+
 <section id="model" class="content-section">
     <div class="container">
         <h2>MODEL</h2>
         <hr>
+        <div class="photo-tabs d-flex flex-wrap gap-2 mb-4">
+            <button class="video-tab active" data-photo="imgs/model/sword.jpg">小型劍渲染</button>
+            <button class="video-tab" data-photo="imgs/model/sword_ao.jpg">小型劍白膜</button>
+            <button class="video-tab" data-photo="imgs/model/sence_01.jpg">場景渲染</button>
+            <button class="video-tab" data-photo="imgs/model/sence_ao.jpg">場景白膜</button>
+            <button class="video-tab" data-photo="imgs/model/lamp_ao.jpg">檯燈白模</button>
+        </div>
+
+        <div class="video-display-container d-flex justify-content-center">
+            <img id="main-model-display" src="imgs/model/sword.jpg" alt="Selected Model" 
+                 style="max-width: 100%; max-height: 70vh; object-fit: contain; display: block; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        </div>
     </div>
 </section>
 
 
-
-
-
-
+<footer id="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h4>Contact Me</h4>
+                <p>If you wish to place a commission, feel free to contact me!</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Email</h4>
+                <p>wangyunting1024@gmail.com.com</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Location</h4>
+                <p>Taichung, Taiwan</p>
+            </div>
+        </div>
+        
+    </div>
+</footer>
 
 </body>
-<!-- <footer>底部</footer> -->
 </html>
 
