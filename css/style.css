@@ -96,6 +96,15 @@ body, html {
     transform-origin: bottom center;
 }
 
+#layer-fox {
+    top: 60px;
+}
+
+#layer-bear {
+    left: 0px;
+}
+
+
 /* 文字圖層容器 */
 #text-overlay {
     position: absolute;
@@ -113,11 +122,11 @@ body, html {
 /* 文字細節設定 */
 #text-overlay h1 {
     font-family: "Times New Roman", Times, serif;
-    color: rgb(3, 3, 40);
-    font-size: 5rem;         /* 根據需求調整大小 */
-    opacity: 0;              /* 初始設定為透明 */
-    transform: scale(0.5);   /* 初始稍微縮小 */
+    font-size: 5rem;
     margin: 0;
+    color: rgb(3, 3, 40); 
+    opacity: 0;
+    transform: scale(0.5);
 }
 /*以上gsap*/
 
@@ -406,4 +415,42 @@ section {
     width: 100%;
     border-radius: 15px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+
+
+/* 手機版專用調整 */
+@media (max-width: 767px) {
+    /* 1. 調整開場動畫文字大小 */
+    #text-overlay h1 {
+        font-size: 2.5rem !important; /* 縮小文字避免超出螢幕 */
+    }
+
+    /* 2. 讓首頁圖片高度自適應，不要填滿 100vh 以防變形 */
+    #parallax-container {
+        height: 60vh; /* 手機版短一點 */
+    }
+
+    /* 3. Drawing 部分：改回垂直捲動或縮小卡片 */
+    .slider-track {
+        gap: 20px;
+        padding: 0 5vw;
+    }
+    
+    .card-item {
+        width: 250px; /* 卡片縮小 */
+    }
+
+    /* 4. 影片與圖片容器：高度調整 */
+    .video-display-container {
+        height: 300px;
+    }
+
+    /* 5. 隱藏自訂鼠標 (手機沒有滑鼠) */
+    #custom-cursor {
+        display: none !important;
+    }
+    body {
+        cursor: auto;
+    }
 }

@@ -12,32 +12,51 @@ document.addEventListener("DOMContentLoaded", function() {
         gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
     });
 
-    // --- 2. 視差動畫修正 (動物跳出 + 縮短時間) ---
-    const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: "#parallax-container",
-            start: "top top",
-            // 將 end 從 4000 縮短為 1500，這會讓動畫在更短的滾動距離內完成（感覺變快）
-            end: "+=1500", 
-            scrub: 1,      // 數值越小，跟隨滾輪的反應越即時
-            pin: true,
-            invalidateOnRefresh: true 
-        }
+    // --- 2. 視差動畫修正 (增加響應式邏輯) ---
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+        // 【電腦版】維持你原本的 ScrollTrigger 邏輯
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#parallax-container",
+                start: "top top",
+                end: "+=1500",
+                scrub: 1,
+                pin: true,
+                invalidateOnRefresh: true 
+            }
+        });
+
+        gsap.set("#layer-bird", { y: -800 });
+        gsap.set("#layer-bear", { x: 800 });
+        gsap.set("#layer-fox",  { y: 800 });
+
+        tl.to("#layer-sky", { scale: 1.2, duration: 2 }, 0)
+        .to("#layer-star", { opacity: 0.5, y: -100, duration: 2 }, 0)
+        .to("#layer-bird", { y: 0, duration: 2 }, 0.2)
+        .to("#layer-bear", { x: 0, duration: 2 }, 0.4)
+        .to("#layer-fox",  { y: 0, duration: 2 }, 0.6)
+        .to("#text-overlay h1", { opacity: 1, scale: 1, duration: 1.5 }, 0.8);
     });
 
-    // 設定初始位置（讓動物先隱藏在畫面外）
-    gsap.set("#layer-fox", { x: -500, rotation: -10 }); // 從左邊跳出
-    gsap.set("#layer-bear", { x: 500, rotation: 10 });  // 從右邊跳出
-    gsap.set("#layer-bird", { y: 300 });               // 鳥(草圖層)從下面上來
+    mm.add("(max-width: 767px)", () => {
+        // 【手機版】自動播放動畫，不使用 ScrollTrigger Pin
+        const tlMobile = gsap.timeline();
 
-    tl.to("#layer-sky", { scale: 1.2, duration: 2 }, 0)
-    .to("#layer-star", { opacity: 0.5, y: -100, duration: 2 }, 0)
-    // 動物跳入動畫
-    .to("#layer-fox", { x: 0, rotation: 0, duration: 2, ease: "back.out(1.7)" }, 0.2)
-    .to("#layer-bear", { x: 0, rotation: 0, duration: 2, ease: "back.out(1.7)" }, 0.3)
-    .to("#layer-bird", { y: 0, duration: 2, ease: "power2.out" }, 0.4)
-    // 文字出現
-    .to("#text-overlay h1", { opacity: 1, scale: 1, duration: 1.5 }, 0.8);
+        gsap.set("#layer-bird", { y: -200 }); // 手機位移距離縮短
+        gsap.set("#layer-bear", { x: 200 });
+        gsap.set("#layer-fox",  { y: 200 });
+
+        tlMobile.to("#layer-sky", { scale: 1.1, duration: 3 })
+        .to("#layer-bird", { y: 0, duration: 1.5 }, "-=2.5")
+        .to("#layer-bear", { x: 0, duration: 1.5 }, "-=2")
+        .to("#layer-fox",  { y: 0, duration: 1.5 }, "-=1.5")
+        .to("#text-overlay h1", { opacity: 1, scale: 1, duration: 1 }, "-=1");
+        
+        // 手機版讓 Header 直接顯示或簡單淡入
+        gsap.to("header", { opacity: 1, visibility: "visible", y: 0, delay: 2 });
+    });
 
     // --- 3. Header 滑入 ---
     gsap.to("header", {
@@ -250,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function() {
                             if(data.length > 0) {
                                 const info = data[0];
                                 document.querySelector("#left_title").innerText = info.title; // 導覽列的名字
-                                document.querySelector("#intro h2").innerText = info.name;    // Intro 標題
                                 document.querySelector("#intro p").innerText = info.introText; // 介紹文字
                                 document.querySelector("#intro img").src = info.imgSrc;       // 大頭照
                             }

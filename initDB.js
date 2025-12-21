@@ -5,7 +5,7 @@ async function initialize() {
     const introCount = await db.IntroDB.count({});
     if (introCount === 0) {
         await db.IntroDB.insert([
-            { imgSrc: "imgs/pic/10square.png", name: "Nakin", title: "YunTing", introText: "Hello! I'm YunTing, a passionate artist and content creator. Welcome to my portfolio where I showcase my drawings, videos, 3D models, and photography work. Feel free to explore and connect with me!" }
+            { imgSrc: "imgs/pic/10square.png", name: "yunting", title: "YunTing", introText: "Hello! I'm YunTing, a passionate artist and content creator. Welcome to my portfolio where I showcase my drawings, videos, 3D models, and photography work. Feel free to explore and connect with me!" }
         ]);
         console.log("Intro DB 內容已寫入");
     }
