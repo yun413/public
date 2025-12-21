@@ -1,11 +1,10 @@
-// server.js 修正版
 var express = require("express");
 var server = express();
 var bodyParser = require("body-parser");
 var fileupload = require("express-fileupload");
-var db = require("./db.js"); // 確保 db.js 在同一個資料夾
+var db = require("./db.js"); 
 
-// 讓 8080 直接連接到目前資料夾下的檔案
+
 server.use(express.static(__dirname)); 
 
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -15,7 +14,7 @@ server.use(fileupload({limits:{fileSize:2*1024*1024}}));
 // 啟動初始化檢查
 require("./initDB.js");
 
-// --- API 設定 ---
+//API
 server.get("/api/intro", (req, res) => {
     db.IntroDB.find({}).then(results => res.send(results));
 });

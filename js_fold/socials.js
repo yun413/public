@@ -147,9 +147,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-                //fetch
+                
 
-
+                //fetch 以下為資料庫內容
                 // 3. 載入 Picture 作品
                 fetch("/api/pictures")
                     .then(res => res.json())
