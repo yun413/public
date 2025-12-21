@@ -23,10 +23,12 @@ document.addEventListener("DOMContentLoaded", function() {
             invalidateOnRefresh: true 
         }
     });
-    tl.to("#layer-grass", { scale: 1.6 }, 0)
-      .to("#layer-tree1", { scale: 1.4 }, 0.1)
+    tl.to("#layer-bird", { scale: 1.03 }, 0)
+      .to("#layer-bear", { scale: 1.03 }, 0.1)
+      .to("#layer-fox", { scale: 1.03 }, 0.12)
+      .to("#layer-star", { scale: 1.03 }, 0.15)
       .to("#layer-sky", { scale: 1.1 }, 0)
-      .to("#text-overlay h1", { opacity: 1, scale: 1 }, 0.2);
+      .to("#text-overlay h1", { opacity: 1, scale: 1 }, 0.17);
 
     // --- 3. Header 滑入 ---
     gsap.to("header", {
