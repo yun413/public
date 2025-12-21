@@ -1,5 +1,6 @@
 // db.js
 var DB = require("nedb-promises");
+var path = require("path");
 
 // 建立並匯出這五個資料庫物件
 module.exports = {

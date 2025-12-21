@@ -12,23 +12,32 @@ document.addEventListener("DOMContentLoaded", function() {
         gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
     });
 
-    // --- 2. 視差動畫 (Parallax) ---
+    // --- 2. 視差動畫修正 (動物跳出 + 縮短時間) ---
     const tl = gsap.timeline({
         scrollTrigger: {
             trigger: "#parallax-container",
             start: "top top",
-            end: "+=4000",
-            scrub: 1.5,
+            // 將 end 從 4000 縮短為 1500，這會讓動畫在更短的滾動距離內完成（感覺變快）
+            end: "+=1500", 
+            scrub: 1,      // 數值越小，跟隨滾輪的反應越即時
             pin: true,
             invalidateOnRefresh: true 
         }
     });
-    tl.to("#layer-bird", { scale: 1.03 }, 0)
-      .to("#layer-bear", { scale: 1.03 }, 0.1)
-      .to("#layer-fox", { scale: 1.03 }, 0.12)
-      .to("#layer-star", { scale: 1.03 }, 0.15)
-      .to("#layer-sky", { scale: 1.1 }, 0)
-      .to("#text-overlay h1", { opacity: 1, scale: 1 }, 0.17);
+
+    // 設定初始位置（讓動物先隱藏在畫面外）
+    gsap.set("#layer-fox", { x: -500, rotation: -10 }); // 從左邊跳出
+    gsap.set("#layer-bear", { x: 500, rotation: 10 });  // 從右邊跳出
+    gsap.set("#layer-bird", { y: 300 });               // 鳥(草圖層)從下面上來
+
+    tl.to("#layer-sky", { scale: 1.2, duration: 2 }, 0)
+    .to("#layer-star", { opacity: 0.5, y: -100, duration: 2 }, 0)
+    // 動物跳入動畫
+    .to("#layer-fox", { x: 0, rotation: 0, duration: 2, ease: "back.out(1.7)" }, 0.2)
+    .to("#layer-bear", { x: 0, rotation: 0, duration: 2, ease: "back.out(1.7)" }, 0.3)
+    .to("#layer-bird", { y: 0, duration: 2, ease: "power2.out" }, 0.4)
+    // 文字出現
+    .to("#text-overlay h1", { opacity: 1, scale: 1, duration: 1.5 }, 0.8);
 
     // --- 3. Header 滑入 ---
     gsap.to("header", {
