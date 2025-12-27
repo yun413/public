@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function() {
     
 
 
-    // --- 2. 視差動畫修正 (增加響應式邏輯) ---
+    // --- 2. 視差動畫 ---
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 768px)", () => {
-        // 【電腦版】維持你原本的 ScrollTrigger 邏輯
+        // ScrollTrigger 邏輯
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#parallax-container",
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        gsap.set("#layer-bird", { y: -800 });
+        gsap.set("#layer-bird", { y: -800 });// 初始位置
         gsap.set("#layer-bear", { x: 800 });
         gsap.set("#layer-fox",  { y: 800 });
 
@@ -37,10 +37,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     mm.add("(max-width: 767px)", () => {
-        // 【手機版】自動播放動畫，不使用 ScrollTrigger Pin
+        // 小畫面自動播放動畫 
         const tlMobile = gsap.timeline();
 
-        gsap.set("#layer-bird", { y: -200 }); // 手機位移距離縮短
+        gsap.set("#layer-bird", { y: -200 }); 
         gsap.set("#layer-bear", { x: 200 });
         gsap.set("#layer-fox",  { y: 200 });
 
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .to("#layer-fox",  { y: 0, duration: 1.5 }, "-=1.5")
         .to("#text-overlay h1", { opacity: 1, scale: 1, duration: 1 }, "-=1");
         
-        // 手機版讓 Header 直接顯示或簡單淡入
+        // 讓Header直接顯示
         gsap.to("header", { opacity: 1, visibility: "visible", y: 0, delay: 2 });
     });
 
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
         duration: 0.5
     });
 
-    // --- 4. DRAWING 橫向捲動 (維持不變) ---
+    // --- 4. DRAWING 橫向捲動  ---
     const drawingSection = document.querySelector("#drawing");
     if (drawingSection) {
         const track = drawingSection.querySelector(".slider-track");
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    // --- 5. 通用圖片切換邏輯 (適用於 PICTURE 與 MODEL) ---
+    // --- 5. 通用圖片切換邏輯(PICTURE與MODEL) ---
     function setupPhotoSwitcher(sectionId, displayId) {
         const section = document.querySelector(sectionId);
         const photoDisplay = document.querySelector(displayId);
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    // --- 6. VIDEO 切換邏輯 (限定在 #video 區塊內) ---
+    // --- 6. VIDEO 切換邏輯 ---
     const videoSection = document.querySelector("#video");
     if (videoSection) {
         const videoTabs = videoSection.querySelectorAll(".video-tab");
@@ -155,8 +155,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- 7. Footer ---
     gsap.to("#main-footer", {
         scrollTrigger: {
-            trigger: "body",       // 監測整個頁面
-            start: "bottom bottom", // 當頁面底部 碰到 視窗底部時
+            trigger: "body",       
+            start: "bottom bottom", 
         },
         opacity: 1,
         visibility: "visible",

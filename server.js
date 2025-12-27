@@ -4,10 +4,10 @@ const fs = require('fs');
 const app = express();
 const PORT = 3000;
 
-// 讓 Node.js 能夠存取你專案內的所有檔案 (HTML, CSS, JS, Imgs)
+// 存取你專案內的所有檔案
 app.use(express.static(__dirname));
 
-// --- 新增：模擬 API 路由 ---
+// --- 新增API路由 ---
 // 當前端 fetch("/api/drawings") 時，Node.js 會去讀取 data/drawings.json 並回傳
 app.get('/api/:category', (req, res) => {
     const category = req.params.category;

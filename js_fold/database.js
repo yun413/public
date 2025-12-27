@@ -1,4 +1,3 @@
-// 注意這裡加上了 async，因為裡面要使用 await
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         await Promise.all([
@@ -39,10 +38,10 @@ async function loadDrawingData(path) {
 // 封裝成一個通用函數，方便重複使用
 async function loadSectionData(jsonPath, tabContainerSelector, displaySelector, srcKey) {
     try {
-        const response = await fetch(jsonPath);
-        const data = await response.json();
+        const response = await fetch(jsonPath);//抓資料
+        const data = await response.json();//轉json
         
-        const tabContainer = document.querySelector(tabContainerSelector);
+        const tabContainer = document.querySelector(tabContainerSelector);//變按鈕
         const mainDisplay = document.querySelector(displaySelector);
 
         if (data.length > 0 && tabContainer) {
@@ -68,7 +67,7 @@ async function loadSectionData(jsonPath, tabContainerSelector, displaySelector, 
                     // 使用 GSAP 動畫切換
                     gsap.to(mainDisplay, {
                         opacity: 0,
-                        duration: 0.3,
+                        duration: 0.3, //切換速度
                         onComplete: () => {
                             mainDisplay.src = newSrc;
                             mainDisplay.onload = () => gsap.to(mainDisplay, { opacity: 1, duration: 0.3 });
