@@ -1,40 +1,33 @@
-var express = require("express");
-var server = express();
-var bodyParser = require("body-parser");
-var fileupload = require("express-fileupload");
-var db = require("./db.js"); 
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const app = express();
+const PORT = 3000;
 
+// 讓 Node.js 能夠存取你專案內的所有檔案 (HTML, CSS, JS, Imgs)
+app.use(express.static(__dirname));
 
-server.use(express.static(__dirname)); 
+// --- 新增：模擬 API 路由 ---
+// 當前端 fetch("/api/drawings") 時，Node.js 會去讀取 data/drawings.json 並回傳
+app.get('/api/:category', (req, res) => {
+    const category = req.params.category;
+    const filePath = path.join(__dirname, 'data', `${category}.json`);
 
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
-server.use(fileupload({limits:{fileSize:2*1024*1024}}));
-
-// 啟動初始化檢查
-require("./initDB.js");
-
-//API
-server.get("/api/intro", (req, res) => {
-    db.IntroDB.find({}).then(results => res.send(results));
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+    } else {
+        res.status(404).json({ error: "File not found" });
+    }
 });
 
-server.get("/api/drawings", (req, res) => {
-    db.DrawingDB.find({}).then(results => res.send(results));
+
+
+// 設定首頁路由
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-server.get("/api/pictures", (req, res) => {
-    db.PictureDB.find({}).then(results => res.send(results));
-});
-
-server.get("/api/videos", (req, res) => {
-    db.VideoDB.find({}).then(results => res.send(results));
-});
-
-server.get("/api/models", (req, res) => {
-    db.ModelDB.find({}).then(results => res.send(results));
-});
-
-server.listen(8080, () => {
-    console.log("伺服器已啟動：http://localhost:8080");
+// 啟動伺服器
+app.listen(PORT, () => {
+    console.log(`伺服器已啟動！請至瀏覽器輸入: http://localhost:${PORT}`);
 });

@@ -36,33 +36,7 @@ header {
     opacity: 0.8;
 }
 
-#custom-cursor {
-    width: 20px;
-    height: 20px;
-    background-color: rgb(3, 3, 40);
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    /* 必須高於 header 的 z-index (10) */
-    z-index: 99999; 
-    /* 初始隱藏，等到 JS 抓到位置再顯示，避免閃爍 */
-    opacity: 1; 
-    transform: translate(-50%, -50%);
-    mix-blend-mode: difference;
-    transition: opacity 0.3s ease;
-}
 
-body {
-    cursor: none;
-}
-
-/* 確保所有可點擊元素都不顯示預設鼠標 */
-a, button, .navbar-toggler {
-    cursor: none !important;
-}
 
 /*gsap*/
 body, html {
@@ -136,7 +110,7 @@ body, html {
     height: 50px;
 }
 
-/* 在寬 >=1100px 時讓 collapse 預設展開，並隱藏 toggler */
+/* 導覽行隱藏 */
 @media (min-width: 1100px) {
   .navbar .navbar-collapse {
     display: flex !important;
@@ -150,7 +124,7 @@ body, html {
   }
 }
 
-/* 在寬 <1100px 時使用 bootstrap 預設的 collapse */
+/* 導覽行調整 */
 /* 可微調 link 顏色/間距 */
 #left_title {
   font-size: 24px;
@@ -243,11 +217,11 @@ section {
     background-color: rgb(8, 8, 31);
 }
 
-.horizontal-wrapper {
+.horizontal-wrapper {  
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 /* 軌道：確保寬度是由內容撐開，且不換行 */
@@ -286,7 +260,6 @@ section {
     border-radius: 50px; /* 膠囊形狀 */
     transition: all 0.3s ease;
     font-size: 0.9rem;
-    cursor: none !important; /* 配合你的自訂鼠標 */
 }
 
 /* 膠囊選中後的變色狀態 */
@@ -446,11 +419,5 @@ section {
         height: 300px;
     }
 
-    /* 5. 隱藏自訂鼠標 (手機沒有滑鼠) */
-    #custom-cursor {
-        display: none !important;
-    }
-    body {
-        cursor: auto;
-    }
+    
 }
