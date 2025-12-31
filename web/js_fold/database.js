@@ -1,17 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
     try {
         await Promise.all([
-            // 1. 載入 Picture 作品
-            loadSectionData("./data/pictures.json", "#picture .photo-tabs", "#main-photo-display", "imgSrc"),
-
-            // 2. 載入 Model 作品
-            loadSectionData("./data/models.json", "#model .photo-tabs", "#main-model-display", "modelSrc"),
-
-            // 3. 載入 Drawings 作品  
-            loadDrawingData("./data/drawings.json")
+            loadSectionData("/getPictures", "#picture .photo-tabs", "#main-photo-display", "imgSrc"),
+            loadSectionData("/getModels", "#model .photo-tabs", "#main-model-display", "modelSrc"),
+            loadDrawingData("/getDrawings")
         ]);
 
-        // 資料載入完畢後，手動觸發一次 GSAP 刷新，確保橫向捲動計算正確
+       
         if (typeof ScrollTrigger !== 'undefined') {
             ScrollTrigger.refresh();
             console.log("資料載入完成，GSAP 已刷新");

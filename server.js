@@ -1,33 +1,72 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const app = express();
-const PORT = 3000;
-
-// 存取你專案內的所有檔案
-app.use(express.static(__dirname));
-
-// --- 新增API路由 ---
-// 當前端 fetch("/api/drawings") 時，Node.js 會去讀取 data/drawings.json 並回傳
-app.get('/api/:category', (req, res) => {
-    const category = req.params.category;
-    const filePath = path.join(__dirname, 'data', `${category}.json`);
-
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).json({ error: "File not found" });
-    }
-});
+var express = require("express");
+var server = express();
+var bodyParser = require("body-parser");
 
 
+server.set("view engine", 'ejs');
+server.set("views", __dirname+"/view")
 
-// 設定首頁路由
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+var fileUpload = require("express-fileupload");
 
-// 啟動伺服器
-app.listen(PORT, () => {
-    console.log(`伺服器已啟動！請至瀏覽器輸入: http://localhost:${PORT}`);
-});
+server.use(express.static(__dirname + "/web"));
+server.use(bodyParser.urlencoded());
+server.use(bodyParser.json());
+server.use(fileUpload({limits:{fileSize:2*1024*1024}}))
+
+var DB=require("nedb-promises");
+var DrawingDB = DB.create(__dirname+"/web/data/drawing.db");
+var ModelDB = DB.create(__dirname+"/web/data/model.db");
+var PictureDB = DB.create(__dirname+"/web/data/picture.db");
+var ContactDB = DB.create(__dirname + "/Contact.db");
+
+server.get("/", (req, res) => {
+    res.sendFile(__dirname + "/web/index.html");
+})
+
+server.get("/getDrawings", (req, res) => {
+
+    DrawingDB.find({},{_id:0}).then(results=>{
+        res.send(results);
+    }).catch(error=>{
+
+    })
+    
+})
+
+server.get("/getModels", (req, res) => {
+
+    ModelDB.find({}).then(results=>{
+        res.send(results);
+    })
+    
+})
+
+
+server.get("/getPictures",(req,res)=>{
+
+    PictureDB.find({},{_id:0}).then(results=>{
+        res.send(results);
+    }).catch(error=>{
+
+    })
+
+})
+
+
+
+
+server.post("/contact", (req, res) =>{
+    ContactDB.insert(req.body);
+    //move to public/upload
+    var upFile=req.files.myFile1;
+    upFile.mv(__dirname+"/public/upload/"+upFile.name, function(err){
+        if(err==null){
+            res.render("msg",{message:"I got a file: "+upFile.name})
+        }else{
+            res.render("msg",{message:err});
+        }
+    })
+})
+
+
+server.listen(80)
