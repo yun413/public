@@ -24,34 +24,16 @@ server.get("/", (req, res) => {
 })
 
 server.get("/getDrawings", (req, res) => {
-
-    DrawingDB.find({},{_id:0}).then(results=>{
-        res.send(results);
-    }).catch(error=>{
-
-    })
-    
-})
+    DrawingDB.find({}).then(results => res.send(results));
+});
 
 server.get("/getModels", (req, res) => {
+    ModelDB.find({}).then(results => res.send(results));
+});
 
-    ModelDB.find({}).then(results=>{
-        res.send(results);
-    })
-    
-})
-
-
-server.get("/getPictures",(req,res)=>{
-
-    PictureDB.find({},{_id:0}).then(results=>{
-        res.send(results);
-    }).catch(error=>{
-
-    })
-
-})
-
+server.get("/getPictures", (req, res) => {
+    PictureDB.find({}).then(results => res.send(results));
+});
 
 
 

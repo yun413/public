@@ -29,49 +29,40 @@ async function loadDrawingData(path) {
 }
 
 
+// web/js_fold/database.js
 
-// 封裝成一個通用函數，方便重複使用
-async function loadSectionData(jsonPath, tabContainerSelector, displaySelector, srcKey) {
+async function loadSectionData(path, tabContainerSelector, displaySelector, srcKey) {
     try {
-        const response = await fetch(jsonPath);//抓資料
-        const data = await response.json();//轉json
+        const res = await fetch(path);
+        const data = await res.json();
         
-        const tabContainer = document.querySelector(tabContainerSelector);//變按鈕
+        // --- 加入這行除錯資訊 ---
+        console.log("從伺服器拿到的資料：", data); 
+
+        const tabContainer = document.querySelector(tabContainerSelector);
         const mainDisplay = document.querySelector(displaySelector);
 
-        if (data.length > 0 && tabContainer) {
-            // 生成 Buttons
-            tabContainer.innerHTML = data.map((item, index) => `
-                <button class="video-tab ${index === 0 ? 'active' : ''}" data-src="${item[srcKey]}">
-                    ${item.title}
-                </button>
-            `).join("");
+        // 確保 data 是一個陣列且長度大於 0
+        if (Array.isArray(data) && data.length > 0 && tabContainer) {
+            tabContainer.innerHTML = data.map((item, index) => {
+                // 這裡的 item.title 必須對應你 .db 檔案裡的 key
+                return `
+                    <button class="video-tab ${index === 0 ? 'active' : ''}" data-src="${item[srcKey]}">
+                        ${item.title}
+                    </button>
+                `;
+            }).join("");
 
-            // 預設第一張
-            mainDisplay.src = data[0][srcKey];
-
-            // 綁定點擊事件
-            const tabs = tabContainer.querySelectorAll(".video-tab");
-            tabs.forEach(tab => {
-                tab.addEventListener("click", function() {
-                    tabs.forEach(t => t.classList.remove("active"));
-                    this.classList.add("active");
-                    
-                    const newSrc = this.getAttribute("data-src");
-                    
-                    // 使用 GSAP 動畫切換
-                    gsap.to(mainDisplay, {
-                        opacity: 0,
-                        duration: 0.3, //切換速度
-                        onComplete: () => {
-                            mainDisplay.src = newSrc;
-                            mainDisplay.onload = () => gsap.to(mainDisplay, { opacity: 1, duration: 0.3 });
-                        }
-                    });
-                });
-            });
+            // 設定初始圖片
+            if (mainDisplay) {
+                mainDisplay.src = data[0][srcKey];
+            }
+            
+            // ... 綁定點擊事件的代碼 ...
+        } else {
+            console.warn("抓到了資料，但格式不正確或沒有內容:", data);
         }
     } catch (error) {
-        console.error(`無法讀取資料: ${jsonPath}`, error);
+        console.error(`讀取失敗: ${path}`, error);
     }
 }
