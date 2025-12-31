@@ -1,12 +1,12 @@
 var express = require("express");
 var server = express();
 var bodyParser = require("body-parser");
+var fileUpload = require("express-fileupload");
 
 
 server.set("view engine", 'ejs');
 server.set("views", __dirname+"/view")
 
-var fileUpload = require("express-fileupload");
 
 server.use(express.static(__dirname + "/web"));
 server.use(bodyParser.urlencoded());
