@@ -49,7 +49,7 @@ server.post("/contact", (req, res) =>{
     ContactDB.insert(req.body);
     //move to public/upload
     var upFile=req.files.myFile1;
-    upFile.mv(__dirname+"/public/upload/"+upFile.name, function(err){
+    upFile.mv(__dirname+"/web/upload/"+upFile.name, function(err){
         if(err==null){
             res.render("msg",{message:"I got a file: "+upFile.name})
         }else{
@@ -59,6 +59,6 @@ server.post("/contact", (req, res) =>{
 })
 
 
-server.listen(80, () => {
-    console.log("伺服器已啟動，請至瀏覽器輸入: http://localhost80");
+server.listen(3000, () => {
+    console.log("伺服器已啟動，請至瀏覽器輸入: http://localhost:3000");
 })
