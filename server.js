@@ -20,11 +20,19 @@ var PictureDB = DB.create(__dirname+"/web/data/pictures.db");
 var ContactDB = DB.create(__dirname + "/Contact.db");
 
 server.get("/", (req, res) => {
-    res.sendFile(__dirname + "/web/index.html");
+    res.sendFile(__dirname + "/index.html");
 })
 
 server.get("/getDrawings", (req, res) => {
-    DrawingDB.find({}).then(results => res.send(results));
+    //db
+    // {"title":"Work 1","imgSrc":"imgs/pic/567.jpg"}
+    // {"title":"Work 2","imgSrc":"imgs/pic/0708.jpg"}
+    // {"title":"Work 3","imgSrc":"imgs/pic/A4彩繪.png"}
+    // {"title":"Work 4","imgSrc":"imgs/pic/貴族小姐.jpg"}
+    // {"title":"Work 5","imgSrc":"imgs/pic/席菈.png"}
+    res.send(drawings)
+
+
 });
 
 server.get("/getModels", (req, res) => {
@@ -51,4 +59,6 @@ server.post("/contact", (req, res) =>{
 })
 
 
-server.listen(80)
+server.listen(80, () => {
+    console.log("伺服器已啟動，請至瀏覽器輸入: http://localhost80");
+})
