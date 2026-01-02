@@ -14,9 +14,9 @@ server.use(bodyParser.json());
 server.use(fileUpload({limits:{fileSize:2*1024*1024}}))
 
 var DB=require("nedb-promises");
-var DrawingDB = DB.create(__dirname+"/web/data/drawing.db");
-var ModelDB = DB.create(__dirname+"/web/data/model.db");
-var PictureDB = DB.create(__dirname+"/web/data/picture.db");
+var DrawingDB = DB.create(__dirname+"/web/data/drawings.db");
+var ModelDB = DB.create(__dirname+"/web/data/models.db");
+var PictureDB = DB.create(__dirname+"/web/data/pictures.db");
 var ContactDB = DB.create(__dirname + "/Contact.db");
 
 server.get("/", (req, res) => {
